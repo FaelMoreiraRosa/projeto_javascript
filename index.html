@@ -1,20 +1,23 @@
 <!DOCTYPE html>
-
-<html lang="pt-BR">
-
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projeto de front end 02: javascript</title>
     <link rel="stylesheet" href="style.css">
-    <title>Document</title>
-
 </head>
-
 <body>
-    <script src="script.js" defer> </script>
-    <button onclick="abrirExemplo1('Exemplo1')"> Exemplo 1</button>
-    <button onclick="abrirExemplo2('Exemplo2')"> Exemplo 2</button>
-    <button onclick="abrirExemplo3('Exemplo3')"> Exemplo 3</button>
-</body>
+    <h2> Escolha um dos jogos: </h2>
+    
+    <button onclick="exemplo1()">Jogo da Média</button>
 
+    <button onclick="exemplo2()">Jogo do Formulário</button>
+
+    <button onclick="exemplo3()">Jogo do número Secreto</button>
+    
+    <script src="script.js" defer></script>
+    
+    <div id="conteudo"></div>
+    
+</body>
 </html>
