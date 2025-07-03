@@ -1,4 +1,4 @@
-function calcularMedia() {
+function exemplo1() {
     const quantidadeStr = prompt("Olá! Informe quantos números deseja calcular a média:");
     const quantidade = parseInt(quantidadeStr);
     let total = 0;
@@ -13,7 +13,7 @@ function calcularMedia() {
     console.log("Resultado da média:", resultado);
 }
 
-function formularioValores() {
+function exemplo2() {
     const container = document.getElementById("conteudo");
     const campos = Array.from({ length: 5 }, (_, idx) => `
         <input type="text" id="entrada${idx + 1}" placeholder="Valor ${idx + 1}" required><br>
@@ -51,7 +51,7 @@ function formularioValores() {
     });
 }
 
-function jogoNumeroSecreto() {
+function exemplo3() {
     document.getElementById("conteudo").innerHTML = `
         <h2>Jogo do Número Secreto</h2>
         <p></p>
@@ -98,19 +98,3 @@ function gerarNumero() {
     if (historicoNumeros.length === limiteNumero) {
         historicoNumeros = [];
     }
-
-    if (historicoNumeros.includes(novoNumero)) {
-        return gerarNumero();
-    }
-
-    historicoNumeros.push(novoNumero);
-    return novoNumero;
-}
-
-function iniciarNovoJogo() {
-    alvo = gerarNumero();
-    contadorTentativas = 1;
-    mostrarMensagemInicial();
-    document.querySelector("input").value = '';
-    document.getElementById("btnReiniciar").disabled = true;
-}
