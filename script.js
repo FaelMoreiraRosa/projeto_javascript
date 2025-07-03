@@ -1,100 +1,113 @@
-function exemplo1() {
-    const quantidadeStr = prompt("Olá! Informe quantos números deseja calcular a média:");
-    const quantidade = parseInt(quantidadeStr);
-    let total = 0;
+function exemplo1(){
 
-    for (let i = 0; i < quantidade; i++) {
-        const numeroStr = prompt(`Digite o número ${i + 1}:`);
-        const numero = parseInt(numeroStr);
-        total += numero;
+    let qtdNumeros_s =  prompt ("Seja bem vindo!, digite a quantidade de numeros que você deseja fazer a média : ");
+    let qtdNumeros_i = parseInt(qtdNumeros_s);
+
+    let soma = 0;
+
+    for (let count = 0; count < qtdNumeros_i ; count++){
+        let numeros_s = prompt("Digite aqui o numero :");
+        let x1 = parseInt(numeros_s);
+        soma += x1;
     }
 
-    const resultado = total / quantidade;
-    console.log("Resultado da média:", resultado);
+    let media = soma / qtdNumeros_i;
+
+    console.log("A média é : "+media);
+
 }
 
-function exemplo2() {
-    const container = document.getElementById("conteudo");
-    const campos = Array.from({ length: 5 }, (_, idx) => `
-        <input type="text" id="entrada${idx + 1}" placeholder="Valor ${idx + 1}" required><br>
-    `).join('');
+function exemplo2(){
 
-    container.innerHTML = `
-        <form id="dadosForm">
-            ${campos}
-            <button type="submit">Salvar</button>
-        </form>
-    `;
+    document.getElementById('conteudo').innerHTML = `
+    <form id="formulario">
+      ${[1, 2, 3, 4, 5].map(i => `<input type="text" id="valor${i}" placeholder="Valor ${i}" required><br>`).join('')}
+      <button type="submit">Salvar</button>
+    </form>
+  `;
 
-    const form = document.getElementById("dadosForm");
+    document.getElementById("formulario").addEventListener("submit", function (e) {
+  e.preventDefault();
 
-    form.addEventListener("submit", (evento) => {
-        evento.preventDefault();
-
-        const entradas = [];
-        for (let j = 1; j <= 5; j++) {
-            const valorCampo = document.getElementById(`entrada${j}`).value.trim();
-            if (!valorCampo) {
-                alert(`O campo Valor ${j} está vazio.`);
-                return;
-            }
-            entradas.push(valorCampo);
-        }
-
-        const textoArquivo = entradas.map((val, idx) => `Valor ${idx + 1}: ${val}`).join('\n');
-        const arquivo = new Blob([textoArquivo], { type: "text/plain;charset=utf-8" });
-
-        const linkDownload = document.createElement("a");
-        linkDownload.href = URL.createObjectURL(arquivo);
-        linkDownload.download = "valores.txt";
-        linkDownload.click();
-    });
-}
-
-function exemplo3() {
-    document.getElementById("conteudo").innerHTML = `
-        <h2>Jogo do Número Secreto</h2>
-        <p></p>
-        <input type="number" min="1" max="10" />
-        <button onclick="validarPalpite()">Chutar</button>
-        <button id="btnReiniciar" onclick="iniciarNovoJogo()" disabled>Reiniciar</button>
-    `;
-
-    window.historicoNumeros = [];
-    window.limiteNumero = 10;
-    window.alvo = gerarNumero();
-    window.contadorTentativas = 1;
-
-    mostrarMensagemInicial();
-}
-
-function atualizarTexto(tag, conteudo) {
-    const elemento = document.querySelector(tag);
-    elemento.innerHTML = conteudo;
-}
-
-function mostrarMensagemInicial() {
-    atualizarTexto("p", "Escolha um número entre 1 e 10");
-}
-
-function validarPalpite() {
-    const palpite = document.querySelector("input").value;
-    if (parseInt(palpite) === alvo) {
-        atualizarTexto("h2", "Acertou!");
-        const plural = contadorTentativas > 1 ? "tentativas" : "tentativa";
-        atualizarTexto("p", `Você acertou em ${contadorTentativas} ${plural}!`);
-        document.getElementById("btnReiniciar").disabled = false;
-    } else {
-        const dica = palpite > alvo ? "menor" : "maior";
-        atualizarTexto("p", `O número secreto é ${dica}`);
-        contadorTentativas++;
-        document.querySelector("input").value = '';
+  const valores = [];
+  for (let i = 1; i <= 5; i++) {
+    const valor = document.getElementById(`valor${i}`).value.trim();
+    if (valor === "") {
+      alert(`O campo Valor ${i} está vazio.`);
+      return;
     }
+    valores.push(valor);
+  }
+
+  const conteudo = valores.map((v, i) => `Valor ${i + 1}: ${v}`).join("\n");
+
+  const blob = new Blob([conteudo], { type: "text/plain;charset=utf-8" });
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = "valores.txt";
+  link.click();
+});
+
 }
 
-function gerarNumero() {
-    const novoNumero = Math.floor(Math.random() * limiteNumero) + 1;
+function exemplo3(){
+    document.getElementById('conteudo').innerHTML = `
+    <h2>Jogo do Número Secreto</h2>
+    <p></p>
+    <input type="number" min="1" max="10" />
+    <button onclick="verificarChute()">Chutar</button>
+    <button id="reiniciar" onclick="reiniciarJogo()" disabled>Reiniciar</button>
+  `;
 
-    if (historicoNumeros.length === limiteNumero) {
-        historicoNumeros = [];
-    }
+window.listaDeNumerosSorteados = [];
+  window.numeroLimite = 10;
+  window.numeroSecreto = gerarNumeroAleatorio();
+  window.tentativas = 1;
+
+  exibirMensagemInicial();
+}
+
+function exibirTextoNaTela(tag, texto) {
+  const campo = document.querySelector(tag);
+  campo.innerHTML = texto;
+}
+
+function exibirMensagemInicial() {
+  exibirTextoNaTela('p', 'Escolha um número entre 1 e 10');
+}
+
+function verificarChute() {
+  const chute = document.querySelector('input').value;
+  if (chute == numeroSecreto) {
+    exibirTextoNaTela('h2', 'Acertou!');
+    const palavraTentativa = tentativas > 1 ? 'tentativas' : 'tentativa';
+    const mensagem = `Você descobriu o número com ${tentativas} ${palavraTentativa}!`;
+    exibirTextoNaTela('p', mensagem);
+    document.getElementById('reiniciar').disabled = false;
+  } else {
+    const dica = chute > numeroSecreto ? 'menor' : 'maior';
+    exibirTextoNaTela('p', `O número secreto é ${dica}`);
+    tentativas++;
+    document.querySelector('input').value = '';
+  }
+}
+
+function gerarNumeroAleatorio() {
+  const numeroEscolhido = parseInt(Math.random() * numeroLimite + 1);
+  if (listaDeNumerosSorteados.length === numeroLimite) {
+    listaDeNumerosSorteados = [];
+  }
+  if (listaDeNumerosSorteados.includes(numeroEscolhido)) {
+    return gerarNumeroAleatorio();
+  }
+  listaDeNumerosSorteados.push(numeroEscolhido);
+  return numeroEscolhido;
+}
+
+function reiniciarJogo() {
+  numeroSecreto = gerarNumeroAleatorio();
+  tentativas = 1;
+  exibirMensagemInicial();
+  document.querySelector('input').value = '';
+  document.getElementById('reiniciar').disabled = true;
+}
